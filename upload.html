@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twinn Appearance Upload</title>
+</head>
+<body>
+
+<h2>Upload Appearance File</h2>
+
+<input type="file" id="fileInput">
+<button onclick="uploadFile()">Upload</button>
+
+<br><br>
+
+<div id="result"></div>
+
+<script>
+
+async function uploadFile() {
+
+    const file =
+        document.getElementById("fileInput").files[0];
+
+    if (!file) {
+        alert("Choose a file first");
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "file",
+        file
+    );
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/appearance/upload",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+        const data =
+            await response.json();
+
+        document.getElementById(
+            "result"
+        ).innerHTML =
+            "<pre>" +
+            JSON.stringify(
+                data,
+                null,
+                2
+            ) +
+            "</pre>";
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
